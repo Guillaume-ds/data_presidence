@@ -1,11 +1,13 @@
 import streamlit as st
 import datetime as dt 
+import os
+from PIL import Image
 from dateutil.relativedelta import relativedelta
 
 from page_generale import page_generale
 from page_candidat import page_candidat
 
-from donnees import * 
+from data import * 
 
 st.set_page_config(page_title="La data présidentielle",layout='wide')
 
@@ -17,12 +19,15 @@ def main():
     }
 
     #--------------------------------------------------------SIDE BAR----------------------------------------------------------------------------- 
-    st.sidebar.markdown("""<h2 style='text-align: center; font-weight:bold;padding-bottom:15px; margin-bottom:10px;'>
-                    Choix de l'analyse</h2>""", unsafe_allow_html=True)
-    page = st.sidebar.radio("", tuple(pages.keys()))
+    path = os.path.dirname(__file__)
+    my_file = path+'/logo.jpg'
+    st.sidebar.image(Image.open(my_file))
+    st.sidebar.markdown(hr,unsafe_allow_html=True)
+
+    page = st.sidebar.radio("Choix de la page", tuple(pages.keys()))
     
     #---------------------------------------------------------------Page------------------------------------------------------------------------
-    st.markdown("""<h1 style='text-align: center; font-weight:bold;padding-bottom:15px; margin-bottom:10px;'>
+    st.markdown("""<h1 style='text-align: center; font-weight:bold;padding-bottom:15px; margin-bottom:10px;color:rgba(20,10,80,1); text-decoration: underline rgba(20,10,80,1) 3px;'>
                     LES CHIFFRES DE LA PRESIDENTIELLE</h1>""", unsafe_allow_html=True)
         
     

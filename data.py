@@ -1,0 +1,2 @@
+hr = "<hr style=' text-align : center; border-color : grey; margin-top: 10px; margin-bottom: 15px;'>"
+vspace = "<hr style=' text-align : center; border-color : rgba(0,0,0,0); margin-top: 10px; margin-bottom: 15px;'>"
