@@ -20,7 +20,7 @@ def main():
 
     #--------------------------------------------------------SIDE BAR----------------------------------------------------------------------------- 
     path = os.path.dirname(__file__)
-    my_file = path+'\Static\logo.jpg'
+    my_file = path+'/Static/logo.jpg'
     st.sidebar.image(Image.open(my_file))
     st.sidebar.markdown(vspace,unsafe_allow_html=True)
 
