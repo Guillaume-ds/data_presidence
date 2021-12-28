@@ -1,6 +1,5 @@
 import requests as rq
 from bs4 import BeautifulSoup as bs
-import matplotlib.pyplot as plt
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 import numpy as np
 
