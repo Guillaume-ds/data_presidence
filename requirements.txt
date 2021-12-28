@@ -1,3 +1,4 @@
+streamlit == 1.2.0
 streamlit-agraph == 0.0.37
 git+https://github.com/JustAnotherArchivist/snscrape.git
 vaderSentiment == 3.3.2
