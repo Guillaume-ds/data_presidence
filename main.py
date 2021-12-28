@@ -20,16 +20,16 @@ def main():
 
     #--------------------------------------------------------SIDE BAR----------------------------------------------------------------------------- 
     path = os.path.dirname(__file__)
-    my_file = path+'/logo.jpg'
+    my_file = path+'\Static\logo.jpg'
     st.sidebar.image(Image.open(my_file))
-    st.sidebar.markdown(hr,unsafe_allow_html=True)
+    st.sidebar.markdown(vspace,unsafe_allow_html=True)
 
     page = st.sidebar.radio("Choix de la page", tuple(pages.keys()))
     
     #---------------------------------------------------------------Page------------------------------------------------------------------------
     st.markdown("""<h1 style='text-align: center; font-weight:bold;padding-bottom:15px; margin-bottom:10px;color:rgba(20,10,80,1); text-decoration: underline rgba(20,10,80,1) 3px;'>
                     LES CHIFFRES DE LA PRESIDENTIELLE</h1>""", unsafe_allow_html=True)
-        
+    st.markdown(vspace, unsafe_allow_html=True)
     
     pages[page]()
 

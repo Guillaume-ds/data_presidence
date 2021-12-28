@@ -2,10 +2,38 @@ import pandas as pd
 import datetime as dt
 from numpy import random
 
+import datetime as dt
 
-hr = "<hr style=' text-align : center; border-color : grey; margin-top: 10px; margin-bottom: 15px;'>"
-vspace = "<hr style=' text-align : center; border-color : rgba(0,0,0,0); margin-top: 10px; margin-bottom: 15px;'>"
 
+hr = "<hr style=' text-align : center; border-color : grey; margin-top: 15px; margin-bottom: 15px;'>"
+vspace = "<hr style=' text-align : center; border-color : rgba(0,0,0,0); margin-top: 15px; margin-bottom: 15px;'>"
+
+candidats = pd.read_csv("Static/candidats.csv")
+
+def color_candidat(courant):
+      if courant == "Gauche radicale":
+            return "red"
+      elif courant == "Gauche socialiste":
+            return "deeppink"
+      elif courant == "Gauche écologiste":
+            return "green"
+      elif courant == "Centre":
+            return "orange"
+      elif courant == "Droite":
+            return "blue"
+      elif courant == "Droite souverainiste":
+            return "royalblue"
+      elif courant == "Divers":
+            return "wheat"
+      
+#candidats['Couleur']=list(map(color_candidat,candidats['Courant']))
+
+
+
+
+
+
+     
                       
 tweets = pd.DataFrame({'Date': [dt.date(2021,11,28), dt.date(2021,11,28), dt.date(2021,11,28),dt.date(2021,11,28),dt.date(2021,11,28),
                                 dt.date(2021,11,29), dt.date(2021,11,29), dt.date(2021,11,29),dt.date(2021,11,29),dt.date(2021,11,29),
