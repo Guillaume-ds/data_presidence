@@ -1,2 +1,2 @@
 streamlit-agraph == 0.0.37
-snscrape >= 0.4
+git+https://github.com/JustAnotherArchivist/snscrape.git
