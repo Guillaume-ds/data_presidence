@@ -9,7 +9,7 @@ from page_candidat import page_candidat
 
 from data import * 
 
-st.set_page_config(page_title="La data présidentielle",layout='wide')
+st.set_page_config(page_title="Data élections",layout='wide')
 
 def main():
     #---------------------------------------------------------PAGES-------------------------------------------------------------------------------
