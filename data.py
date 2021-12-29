@@ -29,7 +29,12 @@ def color_candidat(courant):
 #candidats['Couleur']=list(map(color_candidat,candidats['Courant']))
 
 
+candidats_twitter = pd.DataFrame({
+      "Candidats":["Yannick Jadot","Emmanuel Macron","Eric Zemmour","Marine Le Pen","Jean Lassalle","Valérie Pécresse"],
+      "Compte Twitter":['yjadot','EmmanuelMacron','ZemmourEric','MLP_officiel','jeanlasalle','vpecresse']
+})
 
+#candidats_twitter.to_csv("Static/comptes_twitter.csv")
 
 
 

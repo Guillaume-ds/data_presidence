@@ -2,16 +2,24 @@ import streamlit as st
 import snscrape.modules.twitter as sntwitter
 
 from scraping_journal import article_lemonde_sentiment
+from scraping_twitter import scraptweets_candidat
 from data import vspace,hr
 import datetime as dt
 from dateutil.relativedelta import relativedelta
 import pandas as pd
 
+
 def page_candidat():
     #------------------------------------------------Sidebar---------------------------------------------------------
     st.sidebar.markdown(hr,unsafe_allow_html = True)
     st.sidebar.markdown("<h2>Paramètres de l'analyse</h2>",unsafe_allow_html = True)
-    choix_candidat = st.sidebar.selectbox("Candidat à analyser",["Macron","Zemmour","Le Pen","Lassal","Pécresse"])
+    choix_candidat = st.sidebar.selectbox("Candidat à analyser",
+                                          ["Yannick Jadot",
+                                           "Emmanuel Macron",
+                                           "Eric Zemmour",
+                                           "Marine Le Pen",
+                                           "Jean Lassal",
+                                           "Valérie Pécresse"])
     
     st.sidebar.markdown(vspace,unsafe_allow_html = True)
     date_deb = st.sidebar.date_input("Choisir une date de début",max_value=dt.date.today()-relativedelta(days=3),value=dt.date.today()-relativedelta(days=30))   
@@ -41,15 +49,19 @@ def page_candidat():
     #------------------------------------------------Analyse twitter---------------------------------------------------------
     # Creating list to append tweet data to
     
-    tweets_list1 = []
+    comptes_twitter = pd.read_csv('Static\comptes_twitter.csv')
+    
+    compte_twitter = comptes_twitter[comptes_twitter['Candidats']==choix_candidat]['Compte Twitter'].item()
+    
+    st.write(compte_twitter)
+    
+    
     analyse_tweet = st.button('analyser les tweets')
     if analyse_tweet:
         # Using TwitterSearchScraper to scrape data and append tweets to list
-        for i,tweet in enumerate(sntwitter.TwitterSearchScraper('from:EmmanuelMacron').get_items()):
-            if i>100:
-                break
-            tweets_list1.append([tweet.date, tweet.id, tweet.content, tweet.user.username, tweet.lang])
-            
-        # Creating a dataframe from the tweets list above 
-        tweets_df1 = pd.DataFrame(tweets_list1, columns=['Datetime', 'Tweet Id', 'Text', 'Username','lang'])
-        st.write(tweets_df1)
+        test = scraptweets_candidat(date_deb,date_fin,compte_twitter)
+        st.write(test)
+        
+    
+    
+

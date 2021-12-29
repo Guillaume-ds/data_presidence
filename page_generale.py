@@ -1,14 +1,16 @@
 import streamlit as st
 from streamlit_agraph import agraph,Node,Edge,Config
+import snscrape.modules.twitter as sntwitter
 
 import datetime as dt
 from dateutil.relativedelta import relativedelta
 import altair as alt
-
+import pandas as pd 
 from math import floor
 from data import hr,vspace,tweets,candidats
 
 def page_generale():
+    candidats = pd.read_csv('Static\candidats.csv')
     #------------------------------------------------Sidebar---------------------------------------------------------
     st.sidebar.markdown(hr,unsafe_allow_html = True)
     liste_courants = list(candidats['Courant'].unique())
@@ -37,6 +39,13 @@ def page_generale():
 
     st.markdown(vspace, unsafe_allow_html=True)
     st.markdown(vspace, unsafe_allow_html=True)
+    
+    #---------------------------------------------------------Metric---------------------------------------------------------
+    
+    
+    
+    
+    
     
     #----------------------------------------------------Agraph graphique----------------------------------------------------
     st.markdown(f"""<h4 style='text-align: center; font-weight:bold; margin-bottom:0px;'>
@@ -88,86 +97,46 @@ def page_generale():
                       config=config)
    
     #----------------------------------------------------Tweeter----------------------------------------------------
-        
-    selection = alt.selection_multi(fields=['Candidat'], bind='legend')
-        
-    line_tweets = alt.Chart(tweets).mark_line().encode(
-            alt.X("yearmonthdate(Date):T"),
-            alt.Y("Tweets:Q"),
-            alt.Color('Candidat:N'),
-            opacity=alt.condition(selection, alt.value(1), alt.value(0.2))
-            ).add_selection(
-            selection
-            )
-            
-    st.altair_chart(line_tweets.interactive()
-                    .properties(title = 'Nombre de tweets mentionnant chaque candidats'),
-                    use_container_width = True)
+    st.markdown(f"""<h4 style='text-align: center; font-weight:bold; margin-bottom:10px;'>
+                    Les chiffres de Tweeter </h4>""",unsafe_allow_html=True)
+    
+    
+    
+    comptes_twitter = pd.read_csv("Static\comptes_twitter.csv")
+    tweets_candidats = pd.DataFrame({
+        "Candidat":[],
+        "Date":[],
+        "Nb de likes":0})
 
-    st.markdown(vspace, unsafe_allow_html=True)
-    st.markdown(vspace, unsafe_allow_html=True)
-    st.markdown(f"""<h4 style='text-align: center; font-weight:bold; margin-bottom:10px;'>
-                    Les chiffres du jours </h4>""",unsafe_allow_html=True)
+    for i in range(len(comptes_twitter)):
+        compte_twitter = comptes_twitter.loc[i,"Compte Twitter"]            
+        for tweet in sntwitter.TwitterSearchScraper(f'since:2021-12-01 from:{compte_twitter}').get_items():
+            tweets_candidats = tweets_candidats.append({
+                "Candidat":tweet.user.username,
+                "Date":tweet.date,
+                "Nb de likes":tweet.likeCount,},ignore_index=True)
+
+    st.write(tweets_candidats)
+    tweets_candidats.to_csv('Static/tweets_candidats.csv')
+    tweets_list=[]
+
+    obtenir_les_tweets = st.button('Scrapper tweeter')
+    if obtenir_les_tweets:    
+        for nom in candidats['Nom']: 
+            for tweet in sntwitter.TwitterSearchScraper(f'{nom} since:2021-12-01 until:2021-12-28 lang:fr').get_items():
+                tweets_list.append([nom, tweet.date, tweet.content,tweet.likeCount])
+            st.write(nom)
     
-    col1,col2,col3,col4 = st.columns(4)
-    today_tweets = tweets[tweets.Date==dt.date.today()] 
-    yesterday_tweets = tweets[tweets.Date==dt.date.today()-relativedelta(days=1)] 
-    max_tweet = max(today_tweets['Tweets'])
-    candidat_max_tweet = today_tweets.loc[today_tweets.Tweets == max_tweet,'Candidat'].item()      
-    col1.metric(label = f"Max tweet : {candidat_max_tweet}",
-                value = max(today_tweets['Tweets']),
-                delta = max_tweet - yesterday_tweets.loc[yesterday_tweets.Candidat == candidat_max_tweet]['Tweets'].item())
-    col2.metric(label = "Nombre total de tweets",
-                value = sum(today_tweets['Tweets']),
-                delta = sum(today_tweets['Tweets']) 
-                        - sum(yesterday_tweets['Tweets']))
-    col3.metric(label = "Nombre moyen de tweets par candidat",
-                value = floor(today_tweets['Tweets'].mean()),
-                delta = floor(today_tweets['Tweets'].mean() - yesterday_tweets['Tweets'].mean()))
-    col4.metric(label = "Indicateur d'intérêt pour la campagne",
-                value = "Elevé")
+    tweets_df = pd.DataFrame(tweets_list, columns=['Candidat', 'Date', 'Text', 'Likes'])
+        
+    nb_tweets=0
+    obtenir_les_tweets2 = st.button('Scrapper tweeter2')
+    if obtenir_les_tweets2:    
+        for nom in candidats['Nom'][:1]: 
+            for tweet in sntwitter.TwitterSearchScraper(f'{nom} since:2021-12-27 until:2021-12-28 lang:fr').get_items():
+                tweets_list.append([nom, tweet.date, tweet.content,tweet.likeCount])
+            st.write(nom,tweets_list)
     
-    def groupe_politique(x):
-        if x in ['Mélanchon']:
-            return "Extrème gauche"
-        elif x in ['Hidalgo']:
-            return "Gauche"
-        elif x in ["Macron"]:
-            return "Centre"
-        elif x in ["Pécresse"]:
-            return "Droite"
-        elif x in ['Le Pen',"Zemmour"]:
-            return "Extreme droite"
-    
-    def couleur_politique(x):
-        if x in ['Mélanchon']:
-            return "rgba(250,10,15,1)"
-        elif x in ['Hidalgo']:
-            return "rgba(245,40,150,1)"
-        elif x in ["Macron"]:
-            return "rgba(250,175,11,1)"
-        elif x in ["Pécresse"]:
-            return "rgba(10,110,250,1)"
-        elif x in ['Le Pen',"Zemmour"]:
-            return "rgba(5,10,165,1)"
-    
-    tweets['Bord politique'] = list(map(groupe_politique,tweets['Candidat']))
-    tweets['Couleur politique'] = list(map(couleur_politique,tweets['Candidat']))
-    bords_politique = ["Extrème gauche","Gauche","Centre","Droite","Extreme droite"]
-    tweets['Ordre'] = tweets['Bord politique'].apply(lambda x: bords_politique.index(x))
-    
-    st.markdown(vspace, unsafe_allow_html=True)
-    st.markdown(vspace, unsafe_allow_html=True)
-    st.markdown(f"""<h4 style='text-align: center; font-weight:bold; margin-bottom:10px;'>
-                    Répartition des tweets par bord politique </h4>""",unsafe_allow_html=True)
-    
-    repartition_parti = alt.Chart(tweets).mark_bar().encode(
-        alt.X('Tweets',stack="normalize"),
-        alt.Y("yearmonthdate(Date):T"),
-        color = alt.Color('Couleur politique:N',scale=None),
-        tooltip = ['Bord politique','Tweets'],
-        order = "Ordre:N"
-    )
-    st.altair_chart(repartition_parti,use_container_width = True)
+    #tweets_df = pd.DataFrame(tweets_list, columns=['Candidat', 'Date', 'Text', 'Likes'])
     
     
