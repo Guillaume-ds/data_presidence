@@ -28,8 +28,15 @@ def main():
     
     #---------------------------------------------------------------Page------------------------------------------------------------------------
     st.markdown("""<h1 style='text-align: center; font-weight:bold;padding-bottom:15px; margin-bottom:10px;color:rgba(20,10,80,1); text-decoration: underline rgba(20,10,80,1) 3px;'>
-                    LES CHIFFRES DE LA PRESIDENTIELLE</h1>""", unsafe_allow_html=True)
+                    DES CHIFFRES POUR LA PRESIDENTIELLE</h1>""", unsafe_allow_html=True)
     st.markdown(vspace, unsafe_allow_html=True)
+    
+    hide_menu_style = """
+        <style>
+        #MainMenu {visibility: hidden;}
+        </style>
+        """
+    st.markdown(hide_menu_style, unsafe_allow_html=True)
     
     pages[page]()
 

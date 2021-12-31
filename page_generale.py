@@ -6,20 +6,32 @@ import datetime as dt
 from dateutil.relativedelta import relativedelta
 import altair as alt
 import pandas as pd 
-from math import floor
-from data import hr,vspace,tweets,candidats
+from millify import prettify
+
+from data import hr,vspace,tweets_candidats,comptes_twitter
+from scraping_twitter import queryTweet,getfollowers
 
 def page_generale():
-    candidats = pd.read_csv('Static\candidats.csv')
+    #------------------------------------------------Sidebar---------------------------------------------------------   
+    
+    @st.cache
+    def donnees_candidats():
+        candidats = pd.read_csv("Static/candidats.csv")
+        liste_courants = list(candidats['Courant'].unique())
+        liste_couleurs = list(candidats['Couleur'].unique())
+        return candidats, liste_courants,liste_couleurs
+    
+    candidats,liste_courants,liste_couleurs = donnees_candidats()
+    if type(tweets_candidats['Jour'][0]) == str:
+        tweets_candidats['Jour'] = tweets_candidats['Jour'].apply(lambda x : dt.datetime.strptime(x,"%Y-%m-%d").date()) 
     #------------------------------------------------Sidebar---------------------------------------------------------
     st.sidebar.markdown(hr,unsafe_allow_html = True)
-    liste_courants = list(candidats['Courant'].unique())
-    liste_couleur = list(candidats['Couleur'].unique())
+    
     courants = st.sidebar.multiselect('Choix des courants politiques',liste_courants,liste_courants)
     statut = st.sidebar.multiselect('Choix du statut',candidats['Statut'].unique(),"En course")
     
     #------------------------------------------------Dates---------------------------------------------------------
-       
+    
     date_premier_tour = dt.date(2022,4,10)
     delta_premier_tour = (date_premier_tour-dt.date.today()).days  
     date_election = dt.date(2022,4,24)
@@ -39,22 +51,102 @@ def page_generale():
 
     st.markdown(vspace, unsafe_allow_html=True)
     st.markdown(vspace, unsafe_allow_html=True)
+    st.markdown(vspace, unsafe_allow_html=True)
+    #----------------------------------------------------Tweeter----------------------------------------------------
     
+    st.markdown(f"""<h4 style='text-align: center; font-weight:bold; margin-bottom:-10px;'>
+                    Les chiffres de Tweeter </h4>""",unsafe_allow_html=True)
+    
+    st.markdown(f"""<p style='text-align: center; margin-bottom:15px; margin-top:-10px'>
+                    Données collectées depuis le 01/01/2021 </p>""",unsafe_allow_html=True)
+    
+    st.markdown(vspace, unsafe_allow_html=True)
+    st.markdown(vspace, unsafe_allow_html=True)
+    
+    col1,col2,col3,col4,col5=st.columns([2,1,2,1,2])
+    dat_deb = col2.date_input('Date de début de l\'analyse',
+                              min_value=dt.date(2021,1,1),
+                              max_value=dt.date.today(),
+                              value=dt.date.today()-relativedelta(days=30))
+    dat_fin = col4.date_input('Date de fin de l\'analyse',
+                              min_value=dat_deb,
+                              max_value=dt.date.today())
+    
+    tweets_candidats_analyse = tweets_candidats.loc[(tweets_candidats.Jour>=dat_deb)&(tweets_candidats.Jour<=dat_fin)]
+    
+    st.markdown(vspace, unsafe_allow_html=True)
+    st.markdown(vspace, unsafe_allow_html=True)
+    
+    selection = alt.selection_multi(fields=['Candidat'], bind='legend')
+        
+    line_tweets = alt.Chart(tweets_candidats_analyse).mark_line().encode(
+            alt.X("yearmonthdate(Date):T"),
+            alt.Y("count(Tweets):Q"),
+            alt.Color('Candidat:N'),
+            tooltip = ['Candidat','count(Tweets):Q'],
+            opacity=alt.condition(selection, alt.value(1), alt.value(0.2))
+            ).add_selection(
+            selection
+            )
+
+    st.altair_chart(line_tweets.interactive()
+                    .properties(title = 'Nombre de tweets par jour par candidat'),
+                    use_container_width = True)
+    
+    st.markdown(vspace, unsafe_allow_html=True)
+    st.markdown(vspace, unsafe_allow_html=True)    
+    
+    bar_tweets = alt.Chart(tweets_candidats_analyse).mark_bar().encode(
+        alt.X("Candidat:N",
+              axis=alt.Axis(labelAngle=0),
+              sort=alt.EncodingSortField(field="Candidat", op="count", order='descending')),
+        alt.Y("count(Tweets):Q"),
+        tooltip = ['Candidat',alt.Tooltip('count(Tweets):Q',title='Total de tweets')],
+        
+    )
+    st.altair_chart(bar_tweets.interactive()
+                    .properties(title = 'Nombre total de tweets par candidat'),
+                    use_container_width = True)
     #---------------------------------------------------------Metric---------------------------------------------------------
+    st.markdown(vspace, unsafe_allow_html=True)
+    st.markdown(vspace, unsafe_allow_html=True)
     
+       
+    tweets_jour = tweets_candidats[tweets_candidats['Jour']==dt.date.today()-relativedelta(days=1)]
+    tweet_hier = tweets_candidats[tweets_candidats['Jour']==dt.date.today()-relativedelta(days=2)]
+    tweet_semaine = tweets_candidats[tweets_candidats['Jour']>=dt.date.today()-relativedelta(days=7)]
+    tweet_semaine_passee = tweets_candidats[(tweets_candidats['Jour']>=dt.date.today()-relativedelta(days=14)) &
+                                     (tweets_candidats['Jour']<dt.date.today()-relativedelta(days=7))]
     
+    col1,col2,col3,col4 = st.columns(4)
     
+    col1.metric(label="Nb de tweets du jour",
+                value = len(tweets_jour),
+                delta = len(tweets_jour) - len(tweet_hier))
     
+    col2.metric(label="Nb de likes du jour",
+                value = prettify(int(tweets_jour['Nb de likes'].sum()),' '),
+                delta = prettify(int(tweets_jour['Nb de likes'].sum()) - int(tweet_hier['Nb de likes'].sum()),' '))
     
+    col3.metric(label="Nb de tweets de la semaine",
+                value = len(tweet_semaine),
+                delta = len(tweet_semaine) - len(tweet_semaine_passee))
+    
+    col4.metric(label="Nb de likes total de la semaine",
+                value = prettify(int(tweet_semaine['Nb de likes'].sum()),' '),
+                delta = prettify(int(tweet_semaine['Nb de likes'].sum()) - int(tweet_semaine_passee['Nb de likes'].sum()),' '))
+ 
     
     #----------------------------------------------------Agraph graphique----------------------------------------------------
+    st.markdown(vspace, unsafe_allow_html=True)
+    st.markdown(vspace, unsafe_allow_html=True)
     st.markdown(f"""<h4 style='text-align: center; font-weight:bold; margin-bottom:0px;'>
                     Les candidats et leurs partis </h4>""",unsafe_allow_html=True)
     candidats_analyse = candidats.loc[(candidats.Statut.isin(statut)) & (candidats.Courant.isin(courants))].reset_index()  
      
     nodes_courants=[] 
     nodes_courants = [Node(id=i,label=str(i),
-                           color = liste_couleur[index],
+                           color = liste_couleurs[index],
                            size=800) for index,i in enumerate(liste_courants)]
     
     nodes_candidats=[]
@@ -96,47 +188,4 @@ def page_generale():
                       edges=edges, 
                       config=config)
    
-    #----------------------------------------------------Tweeter----------------------------------------------------
-    st.markdown(f"""<h4 style='text-align: center; font-weight:bold; margin-bottom:10px;'>
-                    Les chiffres de Tweeter </h4>""",unsafe_allow_html=True)
-    
-    
-    
-    comptes_twitter = pd.read_csv("Static\comptes_twitter.csv")
-    tweets_candidats = pd.DataFrame({
-        "Candidat":[],
-        "Date":[],
-        "Nb de likes":0})
-
-    for i in range(len(comptes_twitter)):
-        compte_twitter = comptes_twitter.loc[i,"Compte Twitter"]            
-        for tweet in sntwitter.TwitterSearchScraper(f'since:2021-12-01 from:{compte_twitter}').get_items():
-            tweets_candidats = tweets_candidats.append({
-                "Candidat":tweet.user.username,
-                "Date":tweet.date,
-                "Nb de likes":tweet.likeCount,},ignore_index=True)
-
-    st.write(tweets_candidats)
-    tweets_candidats.to_csv('Static/tweets_candidats.csv')
-    tweets_list=[]
-
-    obtenir_les_tweets = st.button('Scrapper tweeter')
-    if obtenir_les_tweets:    
-        for nom in candidats['Nom']: 
-            for tweet in sntwitter.TwitterSearchScraper(f'{nom} since:2021-12-01 until:2021-12-28 lang:fr').get_items():
-                tweets_list.append([nom, tweet.date, tweet.content,tweet.likeCount])
-            st.write(nom)
-    
-    tweets_df = pd.DataFrame(tweets_list, columns=['Candidat', 'Date', 'Text', 'Likes'])
-        
-    nb_tweets=0
-    obtenir_les_tweets2 = st.button('Scrapper tweeter2')
-    if obtenir_les_tweets2:    
-        for nom in candidats['Nom'][:1]: 
-            for tweet in sntwitter.TwitterSearchScraper(f'{nom} since:2021-12-27 until:2021-12-28 lang:fr').get_items():
-                tweets_list.append([nom, tweet.date, tweet.content,tweet.likeCount])
-            st.write(nom,tweets_list)
-    
-    #tweets_df = pd.DataFrame(tweets_list, columns=['Candidat', 'Date', 'Text', 'Likes'])
-    
-    
+ 

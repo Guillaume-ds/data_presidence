@@ -1,42 +1,42 @@
-Prénom,Nom,Parti,Statut,Courant,Couleur
-Jean-Luc,Mélenchon,La France insoumise (LFI),En course,Gauche radicale,red
-Fabien,Roussel,Parti communiste français (PCF),En course,Gauche radicale,red
-Nathalie,Arthaud,Lutte ouvrière (LO),En course,Gauche radicale,red
-Anasse,Kazib,Révolution permanente,En course,Gauche radicale,red
-Philippe,Poutou,Nouveau parti anticapitaliste (NPA),En course,Gauche radicale,red
-Anne,Hidalgo,Parti socialiste (PS),En course,Gauche socialiste,deeppink
-Christiane,Taubira,Indépendante,Pressentie,Gauche socialiste,deeppink
-Arnaud,Montebourg,Indépendant,En course,Gauche socialiste,deeppink
-Stéphane,Le Foll,Parti socialiste (PS),Éliminé,Gauche socialiste,deeppink
-Ségolène,Royal,Parti socialiste (PS),Retirée,Gauche socialiste,deeppink
-Yannick,Jadot,Europe Ecologie-Les Verts (EELV),En course,Gauche écologiste,green
-Antoine,Waechter,Mouvement écologiste indépendant,En course,Gauche écologiste,green
-Sandrine,Rousseau,Europe Ecologie-Les Verts (EELV),Éliminée,Gauche écologiste,green
-Eric,Piolle,Europe Ecologie-Les Verts (EELV),Éliminé,Gauche écologiste,green
-Jean-Marc,Governatori,Cap écologie,Éliminé,Gauche écologiste,green
-Delphine,Batho,Génération écologie,Éliminée,Gauche écologiste,green
-Emmanuel,Macron,La République en marche (LRM),En course,Centre,orange
-Jean-Christophe,Lagarde,Union des démocrates et indépendants (UDI),Retiré,Centre,orange
-Édouard,Philippe,Indépendant,Retiré,Centre,orange
-Valérie,Pécresse,Libres !,En course,Droite,blue
-Xavier,Bertrand,Divers droite,Éliminé,Droite,blue
-Michel,Barnier,Les Républicains (LR),Éliminé,Droite,blue
-Eric,Ciotti,Les Républicains (LR),Éliminé,Droite,blue
-Philippe,Juvin,Les Républicains (LR),Éliminé,Droite,blue
-Denis,Payre,Les Républicains (LR),Retiré,Droite,blue
-Laurent,Wauquiez,Les Républicains (LR),Retiré,Droite,blue
-Bruno,Retailleau,Les Républicains (LR),Retiré,Droite,blue
-Marine,Le Pen,Rassemblement national (RN),En course,Droite souverainiste,royalblue
-Nicolas,Dupont-Aignan,Debout la France (DLF),En course,Droite souverainiste,royalblue
-Florian,Philippot,Les Patriotes,En course,Droite souverainiste,royalblue
-Antoine,Martinez,Volontaires pour la France (VPF),En course,Droite souverainiste,royalblue
-François,Asselineau,Union populaire républicaine (UPR),En course,Droite souverainiste,royalblue
-Eric,Zemmour,Indépendant,En course,Droite souverainiste,royalblue
-Jean,Lassalle,Résistons,En course,Divers,wheat
-Marie,Cau,Indépendant,En course,Divers,wheat
-Clara,Egger,Espoir RIC 2022,En course,Divers,wheat
-Alexandre,Langlois,Refondation 2022,En course,Divers,wheat
-Hélène,Thouy,Parti animaliste,En course,Divers,wheat
-Georges,Kuzmanovic,République souveraine,En course,Divers,wheat
-Jean-Frédéric,Poisson,"VIA, la voie du peuple",Retiré,Divers,wheat
-Jacline,Mouraud,Indépendant,Retirée,Divers,wheat
+Nom,Parti,Statut,Courant,Couleur,Nb candidatures
+Jean-Luc Mélenchon,La France insoumise (LFI),En course,Gauche radicale,red,3
+Fabien Roussel,Parti communiste français (PCF),En course,Gauche radicale,red,1
+Nathalie Arthaud,Lutte ouvrière (LO),En course,Gauche radicale,red,3
+Anasse Kazib,Révolution permanente,En course,Gauche radicale,red,1
+Philippe Poutou,Nouveau parti anticapitaliste (NPA),En course,Gauche radicale,red,3
+Anne Hidalgo,Parti socialiste (PS),En course,Gauche socialiste,deeppink,1
+Christiane Taubira,Indépendante,Pressentie,Gauche socialiste,deeppink
+Arnaud Montebourg,Indépendant,En course,Gauche socialiste,deeppink,1
+Stéphane Le Foll,Parti socialiste (PS),Éliminé,Gauche socialiste,deeppink,1
+Ségolène Royal,Parti socialiste (PS),Retirée,Gauche socialiste,deeppink,1
+Yannick Jadot,Europe Ecologie-Les Verts (EELV),En course,Gauche écologiste,green,1
+Antoine Waechter,Mouvement écologiste indépendant,En course,Gauche écologiste,green,2
+Sandrine Rousseau,Europe Ecologie-Les Verts (EELV),Éliminée,Gauche écologiste,green,1
+Eric Piolle,Europe Ecologie-Les Verts (EELV),Éliminé,Gauche écologiste,green,1
+Jean-Marc Governatori,Cap écologie,Éliminé,Gauche écologiste,green,1
+Delphine Batho,Génération écologie,Éliminée,Gauche écologiste,green,1
+Emmanuel Macron,La République en marche (LRM),Pressenti,Centre,orange,2
+Jean-Christophe Lagarde,Union des démocrates et indépendants (UDI),Retiré,Centre,orange,1
+Édouard Philippe,Indépendant,Retiré,Centre,orange,1
+Valérie Pécresse,Libres !,En course,Droite,blue,1
+Xavier Bertrand,Divers droite,Éliminé,Droite,blue,1
+Michel Barnier,Les Républicains (LR),Éliminé,Droite,blue,1
+Eric Ciotti,Les Républicains (LR),Éliminé,Droite,blue,1
+Philippe Juvin,Les Républicains (LR),Éliminé,Droite,blue,1
+Denis Payre,Les Républicains (LR),Retiré,Droite,blue,1
+Laurent Wauquiez,Les Républicains (LR),Retiré,Droite,blue,1
+Bruno Retailleau,Les Républicains (LR),Retiré,Droite,blue,1
+Marine Le Pen,Rassemblement national (RN),En course,Droite souverainiste,royalblue,3
+Nicolas Dupont-Aignan,Debout la France (DLF),En course,Droite souverainiste,royalblue,3
+Florian Philippot,Les Patriotes,En course,Droite souverainiste,royalblue,1
+Antoine Martinez,Volontaires pour la France (VPF),En course,Droite souverainiste,royalblue,1
+François Asselineau,Union populaire républicaine (UPR),En course,Droite souverainiste,royalblue,2
+Eric Zemmour,Indépendant,En course,Droite souverainiste,royalblue,1
+Jean Lassalle,Résistons,En course,Divers,wheat,2
+Marie Cau,Indépendant,En course,Divers,wheat,1
+Clara Egger,Espoir RIC 2022,En course,Divers,wheat,1
+Alexandre Langlois,Refondation 2022,En course,Divers,wheat,1
+Hélène Thouy,Parti animaliste,En course,Divers,wheat,1
+Georges Kuzmanovic,République souveraine,En course,Divers,wheat,1
+Jean-Frédéric Poisson,"VIA, la voie du peuple",Retiré,Divers,wheat,1
+Jacline Mouraud,Indépendant,Retirée,Divers,wheat,1
