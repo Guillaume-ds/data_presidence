@@ -120,11 +120,11 @@ def page_generale():
     
     col1,col2,col3,col4 = st.columns(4)
     
-    col1.metric(label="Nb de tweets du jour",
+    col1.metric(label=f"Nb de tweets du {dt.date.today()}",
                 value = len(tweets_jour),
                 delta = len(tweets_jour) - len(tweet_hier))
     
-    col2.metric(label="Nb de likes du jour",
+    col2.metric(label=f"Nb de likes du {dt.date.today()}",
                 value = prettify(int(tweets_jour['Nb de likes'].sum()),' '),
                 delta = prettify(int(tweets_jour['Nb de likes'].sum()) - int(tweet_hier['Nb de likes'].sum()),' '))
     

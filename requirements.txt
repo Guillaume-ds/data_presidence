@@ -3,3 +3,4 @@ streamlit-agraph == 0.0.37
 git+https://github.com/JustAnotherArchivist/snscrape.git
 vaderSentiment == 3.3.2
 millify == 0.1.1
+snscrape >=0.4
