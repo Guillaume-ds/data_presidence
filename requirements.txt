@@ -4,3 +4,5 @@ git+https://github.com/JustAnotherArchivist/snscrape.git
 vaderSentiment == 3.3.2
 millify == 0.1.1
 snscrape >=0.4
+wordcloud == 1.8.1
+nltk == 3.6.7

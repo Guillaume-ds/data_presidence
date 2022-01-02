@@ -5,6 +5,7 @@ import datetime as dt
 import streamlit as st
 
 
+
 def queryTweet(date_deb = None,date_fin=dt.date.today()):
     """
     Scrap l'ensemble des tweets des candidats (sans le contenu pour limiter le volume du fichier)
@@ -16,12 +17,14 @@ def queryTweet(date_deb = None,date_fin=dt.date.today()):
     for i in range(len(comptes_twitter)):
         compte_twitter = comptes_twitter.loc[i,"Compte Twitter"]            
         for tweet in sntwitter.TwitterSearchScraper(f'since:{date_deb} until:{date_fin} from:{compte_twitter}').get_items():
-            tweets_candidats = tweets_candidats.append({
-                "Candidat":tweet.user.username,
+            candidat = comptes_twitter.loc[comptes_twitter['Compte Twitter']==tweet.user.username]['Candidat'].item()
+            tweets_candidats = tweets_candidats.append({                
+                "Candidat":candidat,
                 "Date":tweet.date,
                 "Tweet":tweet.content,
                 "Nb de likes":tweet.likeCount,
-                "Jour": tweet.date.date()},ignore_index=True)
+                "Jour": tweet.date.date(),
+                "Compte Twitter":tweet.user.username,},ignore_index=True)
     tweets_candidats.to_csv('Static/tweets_candidats.csv',index=False)
     
 def getfollowers():

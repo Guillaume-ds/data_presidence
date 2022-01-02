@@ -1,6 +1,6 @@
+from scraping_twitter import queryTweet
 import streamlit as st
 from streamlit_agraph import agraph,Node,Edge,Config
-import snscrape.modules.twitter as sntwitter
 
 import datetime as dt
 from dateutil.relativedelta import relativedelta
@@ -8,13 +8,13 @@ import altair as alt
 import pandas as pd 
 from millify import prettify
 
-from data import hr,vspace,tweets_candidats,comptes_twitter
-from scraping_twitter import queryTweet,getfollowers
+from data import hr,vspace,tweets_candidats
+
 
 def page_generale():
     #------------------------------------------------Sidebar---------------------------------------------------------   
     
-    @st.cache
+    #@st.cache
     def donnees_candidats():
         candidats = pd.read_csv("Static/candidats.csv")
         liste_courants = list(candidats['Courant'].unique())
@@ -38,24 +38,24 @@ def page_generale():
     delta_election = (date_election-dt.date.today()).days
     
     col1,col2,col3 = st.columns([3,1,3])
-    col1.markdown(f"""<h1 style='text-align: center; font-weight:bold; margin-bottom:2px;'>
-                    J-{delta_premier_tour} </h1>""",unsafe_allow_html=True)
-    col1.markdown(f"""<h4 style='text-align: center; font-weight:bold; margin-bottom:10px;'>
-                    Avant le premier tour </h4>""",unsafe_allow_html=True)
+    col1.markdown(f"""<h2 style='text-align: center; font-weight:bold; margin-bottom:2px;'>
+                    J-{delta_premier_tour} </h2>""",unsafe_allow_html=True)
+    col1.markdown(f"""<h5 style='text-align: center; font-weight:bold; margin-bottom:10px;'>
+                    Avant le premier tour </h5>""",unsafe_allow_html=True)
     
 
-    col3.markdown(f"""<h1 style='text-align: center; font-weight:bold; margin-bottom:2px;'>
-                    J-{delta_election} </h1>""",unsafe_allow_html=True)
-    col3.markdown(f"""<h4 style='text-align: center; font-weight:bold; margin-bottom:10px;'>
-                    Avant le résultat des élections </h4>""",unsafe_allow_html=True)
+    col3.markdown(f"""<h2 style='text-align: center; font-weight:bold; margin-bottom:2px;'>
+                    J-{delta_election} </h2>""",unsafe_allow_html=True)
+    col3.markdown(f"""<h5 style='text-align: center; font-weight:bold; margin-bottom:10px;'>
+                    Avant le résultat des élections </h5>""",unsafe_allow_html=True)
 
     st.markdown(vspace, unsafe_allow_html=True)
     st.markdown(vspace, unsafe_allow_html=True)
     st.markdown(vspace, unsafe_allow_html=True)
     #----------------------------------------------------Tweeter----------------------------------------------------
     
-    st.markdown(f"""<h4 style='text-align: center; font-weight:bold; margin-bottom:-10px;'>
-                    Les chiffres de Tweeter </h4>""",unsafe_allow_html=True)
+    st.markdown(f"""<h2 style='text-align: center; font-weight:bold; margin-bottom:-10px;'>
+                    Les chiffres de Tweeter </h2>""",unsafe_allow_html=True)
     
     st.markdown(f"""<p style='text-align: center; margin-bottom:15px; margin-top:-10px'>
                     Données collectées depuis le 01/01/2021 </p>""",unsafe_allow_html=True)
@@ -63,7 +63,7 @@ def page_generale():
     st.markdown(vspace, unsafe_allow_html=True)
     st.markdown(vspace, unsafe_allow_html=True)
     
-    col1,col2,col3,col4,col5=st.columns([2,1,2,1,2])
+    col1,col2,col3,col4,col5=st.columns([1,1,1,1,1])
     dat_deb = col2.date_input('Date de début de l\'analyse',
                               min_value=dt.date(2021,1,1),
                               max_value=dt.date.today(),
@@ -82,9 +82,9 @@ def page_generale():
     line_tweets = alt.Chart(tweets_candidats_analyse).mark_line().encode(
             alt.X("yearmonthdate(Date):T"),
             alt.Y("count(Tweets):Q"),
-            alt.Color('Candidat:N'),
+            alt.Color('Candidat:N',legend=alt.Legend(title="Candidats (cliquer)")),
             tooltip = ['Candidat','count(Tweets):Q'],
-            opacity=alt.condition(selection, alt.value(1), alt.value(0.2))
+            opacity=alt.condition(selection, alt.value(1), alt.value(0.1))
             ).add_selection(
             selection
             )
@@ -98,15 +98,28 @@ def page_generale():
     
     bar_tweets = alt.Chart(tweets_candidats_analyse).mark_bar().encode(
         alt.X("Candidat:N",
-              axis=alt.Axis(labelAngle=0),
+              axis=alt.Axis(labelAngle=-10),
               sort=alt.EncodingSortField(field="Candidat", op="count", order='descending')),
         alt.Y("count(Tweets):Q"),
         tooltip = ['Candidat',alt.Tooltip('count(Tweets):Q',title='Total de tweets')],
         
     )
     st.altair_chart(bar_tweets.interactive()
-                    .properties(title = 'Nombre total de tweets par candidat'),
+                    .properties(title = f'Nombre total de tweets par candidat du {dat_deb} au {dat_fin}'),
                     use_container_width = True)
+    
+    st.markdown(vspace, unsafe_allow_html=True)
+    st.markdown(vspace, unsafe_allow_html=True) 
+    
+    box_likes = alt.Chart(tweets_candidats_analyse).mark_boxplot(extent='min-max').encode(
+                    alt.X('Candidat:O',
+                          axis=alt.Axis(labelAngle=-10)),
+                    y='Nb de likes:Q',
+                    color=alt.Color('Candidat:N',legend=None),)
+    
+    st.altair_chart(box_likes.interactive()
+                    .properties(title = f'Distribution du nombre de likes du {dat_deb} au {dat_fin}')
+                    ,use_container_width = True)
     #---------------------------------------------------------Metric---------------------------------------------------------
     st.markdown(vspace, unsafe_allow_html=True)
     st.markdown(vspace, unsafe_allow_html=True)

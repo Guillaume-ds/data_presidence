@@ -4,7 +4,7 @@ import datetime as dt
 #-------------------------------------------------Mardown---------------------------------------------------
 hr = "<hr style=' text-align : center; border-color : grey; margin-top: 15px; margin-bottom: 15px;'>"
 vspace = "<hr style=' text-align : center; border-color : rgba(0,0,0,0); margin-top: 15px; margin-bottom: 15px;'>"
-
+vspace2 = "<hr style=' text-align : center; border-color : rgba(0,0,0,0); margin-top: 30px; margin-bottom: 30px;'>"
 #--------------------------------------------------Files------------------------------------------------------
 
 tweets_candidats = pd.read_csv('Static/tweets_candidats.csv')
@@ -33,5 +33,8 @@ def couleur_candidat():
       candidats['Couleur']=candidats['Courant'].apply(lambda x: couleur(x))   
       candidats.to_csv('Static/candidats.csv',index=False)
 
+#------------------------------------------------------------------Autre------------------------------------------------
 
 
+french_stopwords = ['d', 'du', 'de', 'la', 'des', 'le', 'et','qu', 'est', 'elle', 'une','n', 'en', 'que', 'aux', 'qui', 'ces', 'les', 'dans', 'sur', 'l', 'un', 'pour', 'par', 'il', 'ou', 'à', 'ce', 'a', 'sont', 'cas', 'plus', 'leur', 'se', 's', 'vous', 'au', 'c', 'aussi', 'toutes', 'autre', 'comme']
+    

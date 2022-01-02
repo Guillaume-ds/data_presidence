@@ -1,13 +1,12 @@
 import streamlit as st
-import datetime as dt 
+
 import os
 from PIL import Image
-from dateutil.relativedelta import relativedelta
 
 from page_generale import page_generale
 from page_candidat import page_candidat
 
-from data import * 
+from data import vspace 
 
 st.set_page_config(page_title="Data élections",layout='wide')
 
