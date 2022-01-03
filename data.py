@@ -1,5 +1,4 @@
 import pandas as pd
-import datetime as dt
 
 #-------------------------------------------------Mardown---------------------------------------------------
 hr = "<hr style=' text-align : center; border-color : grey; margin-top: 15px; margin-bottom: 15px;'>"
@@ -9,7 +8,6 @@ vspace2 = "<hr style=' text-align : center; border-color : rgba(0,0,0,0); margin
 
 tweets_candidats = pd.read_csv('Static/tweets_candidats.csv')
 comptes_twitter = pd.read_csv('Static/comptes_twitter.csv')
-
 
 #-------------------------------------------------Functions---------------------------------------------------
 def couleur_candidat():
@@ -35,6 +33,5 @@ def couleur_candidat():
 
 #------------------------------------------------------------------Autre------------------------------------------------
 
-
-french_stopwords = ['d', 'du', 'de', 'la', 'des', 'le', 'et','qu', 'est', 'elle', 'une','n', 'en', 'que', 'aux', 'qui', 'ces', 'les', 'dans', 'sur', 'l', 'un', 'pour', 'par', 'il', 'ou', 'à', 'ce', 'a', 'sont', 'cas', 'plus', 'leur', 'se', 's', 'vous', 'au', 'c', 'aussi', 'toutes', 'autre', 'comme']
+french_stopwords = ['d', 'du', 'de', 'la', 'des', 'le', 'et','qu','y', 'est', 'elle', 'une','n', 'en', 'que', 'aux', 'qui', 'ces', 'les', 'dans', 'sur', 'l', 'un', 'pour', 'par', 'il', 'ou', 'à', 'ce', 'a', 'sont', 'cas', 'plus', 'leur', 'se', 's', 'vous', 'au', 'c', 'aussi', 'toutes', 'autre', 'comme']
     
