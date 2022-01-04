@@ -3,7 +3,6 @@ import snscrape.modules.twitter as sntwitter
 import pandas as pd
 import datetime as dt
 import streamlit as st
-import os,subprocess
 
 
 def queryTweet(date_deb = None,date_fin=dt.date.today()):
@@ -25,21 +24,12 @@ def queryTweet(date_deb = None,date_fin=dt.date.today()):
                 "Nb de likes":tweet.likeCount,
                 "Jour": tweet.date.date(),
                 "Compte Twitter":tweet.user.username,},ignore_index=True)
-        comptes_twitter.loc[i,'Followers'] = tweet.user.followersCount
+            comptes_twitter.loc[i,'Followers'] = tweet.user.followersCount
     tweets_candidats.to_csv('Static/tweets_candidats.csv',index=False)
     comptes_twitter.to_csv("Static/comptes_twitter.csv",index=False)
+    st.write("Done !")
     
-queryTweet()
 
-os.chdir("../automated-python-scripts")
-
-cmd = "git add ."
-cmd2 = f"git commit -m '{dt.date.today()}'"
-cmd3 = "git push origin master"
-subprocess.check_output(cmd, shell=True)  
-subprocess.check_output(cmd2, shell=True)
-print(subprocess.check_output(cmd3, shell=True))
-    
 def getfollowers():
     comptes_twitter = pd.read_csv("Static/comptes_twitter.csv")
     comptes_twitter['Followers'] = comptes_twitter["Compte Twitter"]

@@ -12,8 +12,9 @@ from data import french_stopwords
 
 from nltk.tokenize import RegexpTokenizer
 
-
 import re 
+
+from scraping_twitter import queryTweet
 
 
 
@@ -164,6 +165,14 @@ def page_candidat():
     wc = WordCloud(background_color="white",max_words=nb_mots,width=800, height=400).fit_words(word_count)
     st.image(wc.to_array(),use_column_width=True) 
       
-
+    st.markdown(vspace2,unsafe_allow_html = True)    
+    st.markdown(vspace,unsafe_allow_html = True)
     
-    
+    with st.expander("Pour le développement"):
+        mdp = st.text_input('Mdp',type = 'password')
+        query = st.button('Query')
+        if query:
+            if mdp == "querytweets":
+                queryTweet()
+            else: 
+                st.error('Reservé au developpement')
