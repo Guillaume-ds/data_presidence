@@ -218,11 +218,10 @@ def page_generale():
         return nodes, edges,config
 
     nodes, edges,config = creation_agraph(statut,courants)
-    
-    col1,col2,col3=st.columns([2,10,1])
-    with col2:
+    with st.expander("Voir les partis et les candidats"):
+        
         return_value = agraph(nodes=nodes, 
-                      edges=edges, 
-                      config=config)
+                    edges=edges, 
+                    config=config)
    
  
