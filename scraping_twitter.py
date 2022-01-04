@@ -3,12 +3,13 @@ import snscrape.modules.twitter as sntwitter
 import pandas as pd
 import datetime as dt
 import streamlit as st
+import time
 
 
 
 def queryTweet(date_deb = None,date_fin=dt.date.today()):
     """
-    Scrap l'ensemble des tweets des candidats (sans le contenu pour limiter le volume du fichier)
+    Scrap l'ensemble des tweets des candidats 
     """
     comptes_twitter = pd.read_csv("Static/comptes_twitter.csv") #liste des comptes à scrapper 
     tweets_candidats = pd.read_csv("Static/tweets_candidats.csv") #liste actuelle des tweets (pour avoir la date max)
@@ -25,7 +26,13 @@ def queryTweet(date_deb = None,date_fin=dt.date.today()):
                 "Nb de likes":tweet.likeCount,
                 "Jour": tweet.date.date(),
                 "Compte Twitter":tweet.user.username,},ignore_index=True)
+        comptes_twitter.loc[i,'Followers'] = tweet.user.followersCount
     tweets_candidats.to_csv('Static/tweets_candidats.csv',index=False)
+    comptes_twitter.to_csv("Static/comptes_twitter.csv",index=False)
+    time.sleep(60*60*24)
+    
+queryTweet()
+    
     
 def getfollowers():
     comptes_twitter = pd.read_csv("Static/comptes_twitter.csv")
