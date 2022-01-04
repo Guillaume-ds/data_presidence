@@ -3,9 +3,7 @@ import snscrape.modules.twitter as sntwitter
 import pandas as pd
 import datetime as dt
 import streamlit as st
-import time
-
-
+import os,subprocess
 
 
 def queryTweet(date_deb = None,date_fin=dt.date.today()):
@@ -32,7 +30,15 @@ def queryTweet(date_deb = None,date_fin=dt.date.today()):
     comptes_twitter.to_csv("Static/comptes_twitter.csv",index=False)
     
 queryTweet()
-    
+
+os.chdir("../automated-python-scripts")
+
+cmd = "git add ."
+cmd2 = f"git commit -m '{dt.date.today()}'"
+cmd3 = "git push origin master"
+subprocess.check_output(cmd, shell=True)  
+subprocess.check_output(cmd2, shell=True)
+print(subprocess.check_output(cmd3, shell=True))
     
 def getfollowers():
     comptes_twitter = pd.read_csv("Static/comptes_twitter.csv")
@@ -46,20 +52,6 @@ def getfollowers():
             comptes_twitter.loc[i,'Followers'] = tweet.user.followersCount
             
     comptes_twitter.to_csv("Static/comptes_twitter.csv",index=False)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -79,15 +71,3 @@ def scraptweets_candidat(date_deb,date_fin,compte_twitter):
     tweets_df1 = pd.DataFrame(tweets_list1, columns=['Candidat', 'Date', 'Text', 'Likes'])
     return tweets_df1
 
-
-
-def changement_nom(x):
-    tweets_candidats = tweets_candidats.rename(columns={'Candidat':'Compte Twitter'}).drop("Unnamed: 0",axis=1)
-    tweets_candidats['Candidat']= [0]*2003
-    a = comptes_twitter[comptes_twitter['Compte Twitter']=='Anne_Hidalgo'].index
-    st.write(comptes_twitter.loc[a,'Candidats'].item())
-    
-    for i in range(len(tweets_candidats)):
-        compte = tweets_candidats.loc[i,'Compte Twitter']
-        tweets_candidats.loc[i,'Candidat'] = comptes_twitter[comptes_twitter['Compte Twitter']==compte]['Candidats'].item()
-    return None
