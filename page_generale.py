@@ -1,4 +1,5 @@
 import streamlit as st
+
 from streamlit_agraph import agraph,Node,Edge,Config
 
 import datetime as dt
@@ -12,7 +13,7 @@ from data import hr,vspace,tweets_candidats
 
 def page_generale():
     #-------------------------------------------------Data Candidats------------------------------------------------------   
-    
+
     @st.cache
     def donnees_candidats():
         #charge le fichier candidat, une fois par session
@@ -224,4 +225,3 @@ def page_generale():
                     edges=edges, 
                     config=config)
    
- 

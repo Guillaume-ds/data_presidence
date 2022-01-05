@@ -1,4 +1,5 @@
 import streamlit as st
+
 import altair as alt
 
 from data import vspace,vspace2,hr,comptes_twitter,tweets_candidats
@@ -20,6 +21,7 @@ from scraping_twitter import queryTweet
 
 def page_candidat():
     #------------------------------------------------Sidebar---------------------------------------------------------
+
     st.sidebar.markdown(hr,unsafe_allow_html = True)
     st.sidebar.markdown("<h2>Paramètres de l'analyse</h2>",unsafe_allow_html = True)
     choix_candidat = st.sidebar.selectbox("Candidat à analyser",

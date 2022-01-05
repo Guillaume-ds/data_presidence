@@ -1,5 +1,6 @@
 import streamlit as st
 
+
 import os
 from PIL import Image
 
@@ -30,12 +31,7 @@ def main():
                     DES CHIFFRES POUR LA PRESIDENTIELLE</h1>""", unsafe_allow_html=True)
     st.markdown(vspace, unsafe_allow_html=True)
     
-    hide_menu_style = """
-        <style>
-        #MainMenu {visibility: hidden;}
-        </style>
-        """
-    st.markdown(hide_menu_style, unsafe_allow_html=True)
+    
     
     pages[page]()
 
