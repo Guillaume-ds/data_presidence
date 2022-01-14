@@ -30,4 +30,4 @@ jobs:
     # Runs a single command using the runners shell
     - name: update
       run: |
-              python scraping_twitter.py
+              python ../../scraping_twitter.py
